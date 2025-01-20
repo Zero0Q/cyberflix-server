@@ -20,7 +20,10 @@ class DatabaseManager:
     def __init__(self):
         # Only initialize once
         if not DatabaseManager._initialized:
-            self.supabase = create_client(env.SUPABASE_URL, env.SUPABASE_KEY)
+            if env.SUPABASE_URL == "mock_supabase_url" and env.SUPABASE_KEY == "mock_supabase_key":
+                self.supabase = None  # or use a mock client
+            else:
+                self.supabase = create_client(env.SUPABASE_URL, env.SUPABASE_KEY)
 
             try:
                 _ = self.supabase.rpc('manifest').execute()

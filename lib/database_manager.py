@@ -26,7 +26,8 @@ class DatabaseManager:
                 self.supabase = create_client(env.SUPABASE_URL, env.SUPABASE_KEY)
 
             try:
-                _ = self.supabase.rpc('manifest').execute()
+                if self.supabase:
+                    _ = self.supabase.rpc('manifest').execute()
                 log.info("Database connection successful")
             except Exception as e:
                 log.warning(f"Database health check failed (this is normal on first run): {str(e)}")
@@ -262,7 +263,7 @@ class DatabaseManager:
 
                 log.info(f"Processed TMDB chunk {i//chunk_size + 1}/{(len(update_items) + chunk_size - 1)//chunk_size}")
 
-  
+
             self.__db_update_changes("tmdb_ids", tmdb_ids)
             self.__cached_data["tmdb_ids"] = self.get_tmdb_ids()
         except Exception as e:

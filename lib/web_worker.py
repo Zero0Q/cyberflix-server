@@ -23,14 +23,15 @@ class WebWorker:
         self.__rpdb_api = RPDB()
         self.__provider = CatalogProvider()
         self.__builder: Builder = Builder()
-
+        
         self.__last_update: datetime = datetime.now()
-
+        self.__manifest_version = "1.0"  # Add this line to define the manifest version
+        
         self.__update_interval = self.get_update_interval()
         self.__background_threading_0 = threading.Thread(
             name="Catalog Service", target=self.__background_catalog_updater
         )
-
+        
         if len(db_manager.cached_catalogs) == 0:
             log.info("::=>[Catalogs] No catalogs found in local cache, fetching...")
             self.__update_interval = 0
@@ -42,7 +43,7 @@ class WebWorker:
             for key, value in db_manager.cached_catalogs.items():
                 data = value.get("data") or []
                 log.info(f"::=>[Catalog] {key} - {len(data)} items")
-
+        
         self.__background_threading_0.start()
 
     @property

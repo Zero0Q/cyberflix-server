@@ -1,1 +1,1 @@
-web: gunicorn -t 600 -k uvicorn.workers.UvicornWorker run.py
+web: gunicorn -t 600 -k uvicorn.workers.UvicornWorker run.py:app
